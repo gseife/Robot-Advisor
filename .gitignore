@@ -122,6 +122,7 @@
 .eggs/
 .env
 .env*
+!.env.example
 .envrc
 .hypothesis/
 .installed.cfg
