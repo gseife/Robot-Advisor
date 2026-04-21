@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useToggles } from "@/lib/toggle-context";
 import type { AdvisePayload } from "@/lib/types";
 import { JargonText } from "./JargonText";
@@ -8,15 +8,22 @@ export function AdvisorCard({ payload }: { payload: AdvisePayload }) {
   const { toggles } = useToggles();
   const src = toggles.literacy ? payload.biased : payload.mitigated;
   const [typed, setTyped] = useState("");
+  const hasStreamedInitial = useRef(false);
 
   useEffect(() => {
-    setTyped("");
+    if (hasStreamedInitial.current) {
+      setTyped(src.greeting);
+      return;
+    }
     const full = src.greeting;
     let i = 0;
     const h = setInterval(() => {
       i++;
       setTyped(full.slice(0, i));
-      if (i >= full.length) clearInterval(h);
+      if (i >= full.length) {
+        clearInterval(h);
+        hasStreamedInitial.current = true;
+      }
     }, 16);
     return () => clearInterval(h);
   }, [src.greeting]);
