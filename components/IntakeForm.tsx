@@ -37,15 +37,21 @@ export function IntakeForm({ initial, personaId }: { initial?: Persona; personaI
         persona_id: personaId,
       },
     };
-    const res = await fetch("/api/advise", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(body),
-    });
-    const payload = await res.json();
-    sessionStorage.setItem("advise-payload", JSON.stringify(payload));
-    sessionStorage.setItem("advise-intake", JSON.stringify(data));
-    router.push("/advice");
+    try {
+      const res = await fetch("/api/advise", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(body),
+      });
+      const payload = await res.json();
+      sessionStorage.setItem("advise-payload", JSON.stringify(payload));
+      sessionStorage.setItem("advise-intake", JSON.stringify(data));
+      router.push("/advice");
+    } catch (err) {
+      console.error("intake submit failed", err);
+      alert("Could not reach the advisor. Check your connection and try again.");
+      setSubmitting(false);
+    }
   }
 
   return (
