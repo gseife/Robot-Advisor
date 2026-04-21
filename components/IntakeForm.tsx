@@ -4,7 +4,6 @@ import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Slider } from "@/components/ui/slider";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 import type { IntakeData, Persona, SavingsGoal } from "@/lib/types";
@@ -12,6 +11,11 @@ import type { IntakeData, Persona, SavingsGoal } from "@/lib/types";
 const EMPTY: IntakeData = {
   age: 25, annual_income_chf: 30000, savings_goal: "general",
   horizon_years: 10, risk_tolerance: 5, free_text_goal: "",
+};
+
+const RISK_LABELS: Record<number, string> = {
+  1: "Very cautious", 2: "Cautious", 3: "Cautious", 4: "Moderate", 5: "Moderate",
+  6: "Balanced", 7: "Growth-oriented", 8: "Aggressive", 9: "Aggressive", 10: "Very aggressive",
 };
 
 export function IntakeForm({ initial, personaId }: { initial?: Persona; personaId?: string }) {
@@ -25,6 +29,16 @@ export function IntakeForm({ initial, personaId }: { initial?: Persona; personaI
     setEdits((e) => e + 1);
     setData((d) => ({ ...d, [k]: v }));
   };
+
+  const numericPatch = (k: "age" | "annual_income_chf" | "horizon_years") =>
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+      const raw = e.target.value;
+      if (raw === "") { patch(k, 0); return; }
+      const n = parseInt(raw, 10);
+      if (!Number.isNaN(n)) patch(k, n);
+    };
+
+  const showOrEmpty = (n: number) => (n === 0 ? "" : String(n));
 
   async function onSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -55,26 +69,47 @@ export function IntakeForm({ initial, personaId }: { initial?: Persona; personaI
   }
 
   return (
-    <form onSubmit={onSubmit} className="space-y-5">
+    <form onSubmit={onSubmit} className="space-y-6 rounded-xl border border-slate-200 bg-white p-6 shadow-sm">
       <div className="grid grid-cols-2 gap-4">
         <div className="space-y-1.5">
-          <Label htmlFor="age">Age</Label>
-          <Input id="age" type="number" min={16} max={99}
-            value={data.age} onChange={(e) => patch("age", Number(e.target.value))} />
+          <Label htmlFor="age" className="text-slate-700">Age</Label>
+          <div className="relative">
+            <Input
+              id="age"
+              type="text"
+              inputMode="numeric"
+              autoComplete="off"
+              className="pr-14 h-11"
+              value={showOrEmpty(data.age)}
+              onChange={numericPatch("age")}
+              placeholder="25"
+            />
+            <span className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-xs text-slate-400">years</span>
+          </div>
         </div>
         <div className="space-y-1.5">
-          <Label htmlFor="income">Annual income (CHF)</Label>
-          <Input id="income" type="number" min={0}
-            value={data.annual_income_chf}
-            onChange={(e) => patch("annual_income_chf", Number(e.target.value))} />
+          <Label htmlFor="income" className="text-slate-700">Annual income</Label>
+          <div className="relative">
+            <span className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-xs font-medium text-slate-400">CHF</span>
+            <Input
+              id="income"
+              type="text"
+              inputMode="numeric"
+              autoComplete="off"
+              className="pl-12 h-11"
+              value={showOrEmpty(data.annual_income_chf)}
+              onChange={numericPatch("annual_income_chf")}
+              placeholder="30,000"
+            />
+          </div>
         </div>
       </div>
 
       <div className="grid grid-cols-2 gap-4">
         <div className="space-y-1.5">
-          <Label>Savings goal</Label>
+          <Label className="text-slate-700">Savings goal</Label>
           <Select value={data.savings_goal} onValueChange={(v) => patch("savings_goal", v as SavingsGoal)}>
-            <SelectTrigger><SelectValue /></SelectTrigger>
+            <SelectTrigger className="h-11"><SelectValue /></SelectTrigger>
             <SelectContent>
               <SelectItem value="house">House down payment</SelectItem>
               <SelectItem value="retirement">Retirement</SelectItem>
@@ -85,30 +120,73 @@ export function IntakeForm({ initial, personaId }: { initial?: Persona; personaI
           </Select>
         </div>
         <div className="space-y-1.5">
-          <Label htmlFor="horizon">Horizon (years)</Label>
-          <Input id="horizon" type="number" min={1} max={50}
-            value={data.horizon_years}
-            onChange={(e) => patch("horizon_years", Number(e.target.value))} />
+          <Label htmlFor="horizon" className="text-slate-700">Horizon</Label>
+          <div className="relative">
+            <Input
+              id="horizon"
+              type="text"
+              inputMode="numeric"
+              autoComplete="off"
+              className="pr-14 h-11"
+              value={showOrEmpty(data.horizon_years)}
+              onChange={numericPatch("horizon_years")}
+              placeholder="10"
+            />
+            <span className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-xs text-slate-400">years</span>
+          </div>
+        </div>
+      </div>
+
+      <div className="space-y-2">
+        <div className="flex items-baseline justify-between">
+          <Label htmlFor="risk" className="text-slate-700">Risk tolerance</Label>
+          <span className="text-sm text-slate-500">
+            <span className="font-semibold text-slate-900">{data.risk_tolerance}</span>/10 · {RISK_LABELS[data.risk_tolerance]}
+          </span>
+        </div>
+        <input
+          id="risk"
+          type="range"
+          min={1}
+          max={10}
+          step={1}
+          value={data.risk_tolerance}
+          onChange={(e) => patch("risk_tolerance", Number(e.target.value))}
+          className="w-full h-2 appearance-none rounded-full bg-slate-200 cursor-pointer accent-blue-600
+                     [&::-webkit-slider-thumb]:appearance-none
+                     [&::-webkit-slider-thumb]:w-5 [&::-webkit-slider-thumb]:h-5
+                     [&::-webkit-slider-thumb]:rounded-full
+                     [&::-webkit-slider-thumb]:bg-blue-600
+                     [&::-webkit-slider-thumb]:border-2 [&::-webkit-slider-thumb]:border-white
+                     [&::-webkit-slider-thumb]:shadow-md
+                     [&::-webkit-slider-thumb]:cursor-grab
+                     [&::-moz-range-thumb]:w-5 [&::-moz-range-thumb]:h-5
+                     [&::-moz-range-thumb]:rounded-full
+                     [&::-moz-range-thumb]:bg-blue-600
+                     [&::-moz-range-thumb]:border-2 [&::-moz-range-thumb]:border-white
+                     [&::-moz-range-thumb]:shadow-md
+                     [&::-moz-range-thumb]:cursor-grab"
+        />
+        <div className="flex justify-between text-[10px] uppercase tracking-wide text-slate-400 px-1">
+          <span>1 · cautious</span>
+          <span>5 · balanced</span>
+          <span>10 · aggressive</span>
         </div>
       </div>
 
       <div className="space-y-1.5">
-        <Label>Risk tolerance: {data.risk_tolerance}/10</Label>
-        <Slider min={1} max={10} step={1}
-          value={[data.risk_tolerance]}
-          onValueChange={(vs) => patch("risk_tolerance", (vs as number[])[0])} />
-      </div>
-
-      <div className="space-y-1.5">
-        <Label htmlFor="goal">Tell us what brings you here today</Label>
-        <Textarea id="goal" rows={3}
+        <Label htmlFor="goal" className="text-slate-700">Tell us what brings you here today</Label>
+        <Textarea
+          id="goal"
+          rows={3}
           placeholder="e.g. I inherited some money and want to invest it..."
           value={data.free_text_goal}
-          onChange={(e) => patch("free_text_goal", e.target.value)} />
+          onChange={(e) => patch("free_text_goal", e.target.value)}
+        />
       </div>
 
-      <Button type="submit" disabled={submitting} className="w-full">
-        {submitting ? "Lumi is thinking…" : "Get my plan"}
+      <Button type="submit" disabled={submitting} className="w-full h-11 text-base">
+        {submitting ? "Lumi is thinking…" : "Get my plan →"}
       </Button>
     </form>
   );
