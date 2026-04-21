@@ -40,7 +40,7 @@ export function IntakeForm({ initial, personaId }: { initial?: Persona; personaI
 
   const showOrEmpty = (n: number) => (n === 0 ? "" : String(n));
 
-  async function onSubmit(e: React.FormEvent) {
+  function onSubmit(e: React.FormEvent) {
     e.preventDefault();
     setSubmitting(true);
     const body = {
@@ -51,21 +51,9 @@ export function IntakeForm({ initial, personaId }: { initial?: Persona; personaI
         persona_id: personaId,
       },
     };
-    try {
-      const res = await fetch("/api/advise", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(body),
-      });
-      const payload = await res.json();
-      sessionStorage.setItem("advise-payload", JSON.stringify(payload));
-      sessionStorage.setItem("advise-intake", JSON.stringify(data));
-      router.push("/advice");
-    } catch (err) {
-      console.error("intake submit failed", err);
-      alert("Could not reach the advisor. Check your connection and try again.");
-      setSubmitting(false);
-    }
+    sessionStorage.setItem("advise-intake-request", JSON.stringify(body));
+    sessionStorage.removeItem("advise-payload");
+    router.push("/advice");
   }
 
   return (
