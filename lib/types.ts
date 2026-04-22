@@ -16,8 +16,9 @@ export type Persona = IntakeData & {
 };
 
 export type Allocation = {
-  us_equity: number;
+  swiss_equity: number;
   intl_equity: number;
+  emerging_equity: number;
   bonds: number;
   cash: number;
 };

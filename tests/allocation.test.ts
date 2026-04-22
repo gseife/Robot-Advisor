@@ -1,30 +1,37 @@
 import { describe, it, expect } from "vitest";
 import { computeAllocation, computeFees } from "@/lib/allocation";
 
+const sumAll = (a: ReturnType<typeof computeAllocation>) =>
+  a.swiss_equity + a.intl_equity + a.emerging_equity + a.bonds + a.cash;
+
+const totalEquity = (a: ReturnType<typeof computeAllocation>) =>
+  a.swiss_equity + a.intl_equity + a.emerging_equity;
+
 describe("computeAllocation", () => {
   it("biased mode caps cash at 17% (Schwab case)", () => {
     const a = computeAllocation(8, true);
     expect(a.cash).toBeCloseTo(0.17, 5);
-    expect(a.us_equity + a.intl_equity + a.bonds + a.cash).toBeCloseTo(1.0, 5);
+    expect(sumAll(a)).toBeCloseTo(1.0, 5);
   });
 
   it("mitigated mode has 2% cash", () => {
     const a = computeAllocation(8, false);
     expect(a.cash).toBeCloseTo(0.02, 5);
-    expect(a.us_equity + a.intl_equity + a.bonds + a.cash).toBeCloseTo(1.0, 5);
+    expect(sumAll(a)).toBeCloseTo(1.0, 5);
   });
 
   it("higher risk yields higher equity weight", () => {
     const low = computeAllocation(2, false);
     const high = computeAllocation(9, false);
-    expect(high.us_equity + high.intl_equity).toBeGreaterThan(low.us_equity + low.intl_equity);
+    expect(totalEquity(high)).toBeGreaterThan(totalEquity(low));
   });
 
-  it("us/intl split is 70/30 of equity weight", () => {
+  it("Swiss/intl/emerging split is 30/50/20 of equity weight", () => {
     const a = computeAllocation(5, false);
-    const eq = a.us_equity + a.intl_equity;
-    expect(a.us_equity / eq).toBeCloseTo(0.7, 2);
-    expect(a.intl_equity / eq).toBeCloseTo(0.3, 2);
+    const eq = totalEquity(a);
+    expect(a.swiss_equity / eq).toBeCloseTo(0.3, 2);
+    expect(a.intl_equity / eq).toBeCloseTo(0.5, 2);
+    expect(a.emerging_equity / eq).toBeCloseTo(0.2, 2);
   });
 
   it("bonds cannot be negative even at risk 10", () => {

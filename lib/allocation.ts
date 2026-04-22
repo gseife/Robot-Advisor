@@ -10,8 +10,9 @@ export function computeAllocation(risk: number, opacityOn: boolean): Allocation 
   const bondShare = Math.max(0, 1 - equityBase - cashShare);
   const actualEquity = 1 - bondShare - cashShare;
   return {
-    us_equity: actualEquity * 0.7,
-    intl_equity: actualEquity * 0.3,
+    swiss_equity: actualEquity * 0.3,
+    intl_equity: actualEquity * 0.5,
+    emerging_equity: actualEquity * 0.2,
     bonds: bondShare,
     cash: cashShare,
   };

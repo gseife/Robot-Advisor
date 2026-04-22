@@ -2,14 +2,15 @@
 import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip } from "recharts";
 import type { Allocation } from "@/lib/types";
 
-const COLORS = ["#2a63d6", "#4a86e8", "#7aa9f0", "#c9d4e5"];
+const COLORS = ["#dc2626", "#2a63d6", "#0d9488", "#64748b", "#c9d4e5"];
 
 export function AllocationChart({ alloc }: { alloc: Allocation }) {
   const data = [
-    { name: "US equity", value: alloc.us_equity },
-    { name: "Intl equity", value: alloc.intl_equity },
-    { name: "Bonds", value: alloc.bonds },
-    { name: "Cash", value: alloc.cash },
+    { name: "Swiss equity", value: alloc.swiss_equity },
+    { name: "Intl developed", value: alloc.intl_equity },
+    { name: "Emerging markets", value: alloc.emerging_equity },
+    { name: "Bonds (CHF)", value: alloc.bonds },
+    { name: "Cash (CHF)", value: alloc.cash },
   ];
   const pct = (v: number) => `${Math.round(v * 1000) / 10}%`;
   return (
