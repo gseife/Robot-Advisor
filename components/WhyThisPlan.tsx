@@ -9,26 +9,35 @@ export function WhyThisPlan({ payload }: { payload: AdvisePayload }) {
 
   if (toggles.literacy) {
     return (
-      <div className="bg-white rounded-xl p-5 shadow-sm border border-slate-200">
-        <div className="text-sm font-medium text-slate-900 mb-2">Your plan</div>
-        <p className="text-sm text-slate-700 leading-relaxed">
+      <section className="hairline pt-6">
+        <div className="text-[10px] uppercase tracking-[0.28em] text-ink-faint mb-3">
+          Your plan
+        </div>
+        <p className="font-display text-xl text-ink-soft leading-relaxed text-pretty">
           <JargonText text={src.terse_summary} glossary={src.jargon_glossary} />
         </p>
-      </div>
+      </section>
     );
   }
 
   return (
-    <div className="bg-white rounded-xl p-5 shadow-sm border border-slate-200 space-y-3">
-      <div className="text-sm font-medium text-slate-900">Why this plan</div>
-      <p className="text-sm text-slate-700 leading-relaxed">
+    <section className="hairline pt-6 space-y-5">
+      <div className="text-[10px] uppercase tracking-[0.28em] text-ink-faint">
+        Why this plan
+      </div>
+      <p className="font-display text-lg text-ink leading-relaxed text-pretty">
         <JargonText text={src.detailed_explanation} glossary={src.jargon_glossary} />
       </p>
       {src.did_you_know ? (
-        <div className="rounded-lg bg-amber-50 border border-amber-200 p-3 text-xs text-amber-900">
-          <span className="font-semibold">Did you know?</span> {src.did_you_know}
-        </div>
+        <aside className="border-l-2 border-brand bg-brand-soft/40 pl-5 py-4">
+          <span className="text-[10px] uppercase tracking-[0.28em] text-brand-deep font-medium">
+            Did you know
+          </span>
+          <p className="text-base text-ink mt-1.5 italic font-display leading-snug text-pretty">
+            {src.did_you_know}
+          </p>
+        </aside>
       ) : null}
-    </div>
+    </section>
   );
 }

@@ -28,16 +28,26 @@ export function AdvisorCard({ payload }: { payload: AdvisePayload }) {
     return () => clearInterval(h);
   }, [src.greeting]);
 
+  const streaming = typed.length < src.greeting.length;
+
   return (
-    <div className="bg-white rounded-xl p-5 shadow-sm border border-slate-200">
-      <div className="flex items-center gap-2 mb-2">
-        <div className="w-7 h-7 rounded-full bg-gradient-to-br from-blue-500 to-indigo-600" />
-        <span className="text-xs uppercase tracking-wide text-slate-500">Lumi, your AI advisor</span>
+    <article className="relative">
+      <div className="text-[10px] uppercase tracking-[0.28em] text-ink-faint mb-3">
+        From your advisor
       </div>
-      <p className="text-lg leading-relaxed text-slate-900 min-h-[2.5rem]">
+      <p className="font-display text-2xl md:text-3xl text-ink leading-snug text-pretty min-h-[5rem]">
+        <span className="text-brand italic mr-1">"</span>
         <JargonText text={typed} glossary={src.jargon_glossary} />
-        {typed.length < src.greeting.length ? <span className="animate-pulse">▍</span> : null}
+        {streaming ? (
+          <span className="ml-0.5 inline-block w-[3px] h-[1em] align-text-bottom bg-brand cursor-pulse translate-y-[2px]" />
+        ) : (
+          <span className="text-brand italic ml-1">"</span>
+        )}
       </p>
-    </div>
+      <div className="mt-5 text-xs italic font-display text-ink-faint">
+        — Lumi, your AI advisor ·{" "}
+        {new Date().toLocaleDateString("de-CH", { dateStyle: "long" })}
+      </div>
+    </article>
   );
 }

@@ -1,7 +1,6 @@
 "use client";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { Button } from "@/components/ui/button";
 import { AdvisorCard } from "@/components/AdvisorCard";
 import { AllocationChart } from "@/components/AllocationChart";
 import { WhyThisPlan } from "@/components/WhyThisPlan";
@@ -20,10 +19,7 @@ export default function AdvicePage() {
 
   useEffect(() => {
     const cached = sessionStorage.getItem("advise-payload");
-    if (cached) {
-      setPayload(JSON.parse(cached));
-      return;
-    }
+    if (cached) { setPayload(JSON.parse(cached)); return; }
     const reqRaw = sessionStorage.getItem("advise-intake-request");
     if (!reqRaw) { router.replace("/"); return; }
     let cancelled = false;
@@ -55,10 +51,15 @@ export default function AdvicePage() {
 
   if (error) {
     return (
-      <main className="min-h-[70vh] flex items-center justify-center px-6">
+      <main className="min-h-screen flex items-center justify-center px-6">
         <div className="max-w-md text-center">
-          <div className="text-rose-600 text-sm font-medium">{error}</div>
-          <Button variant="outline" className="mt-4" onClick={handleBack}>← Try again</Button>
+          <div className="font-display italic text-3xl text-brand mb-4">{error}</div>
+          <button
+            onClick={handleBack}
+            className="text-[10px] uppercase tracking-[0.28em] text-ink-soft hover:text-brand transition"
+          >
+            ← Try again
+          </button>
         </div>
       </main>
     );
@@ -71,32 +72,68 @@ export default function AdvicePage() {
 
   return (
     <main className="max-w-6xl mx-auto px-6 py-8">
-      <header className="flex items-center justify-between mb-6">
-        <div className="flex items-center gap-3">
-          <Button variant="ghost" size="sm" onClick={handleBack}>← Try another</Button>
-          <div>
-            <div className="text-xs tracking-[0.2em] text-slate-500 uppercase">Lumina Wealth</div>
-            <h1 className="text-2xl font-semibold">Your plan</h1>
-          </div>
+      {/* Top utility band */}
+      <div className="flex items-center justify-between mb-6 rise rise-1">
+        <button
+          onClick={handleBack}
+          className="text-[10px] uppercase tracking-[0.28em] text-ink-faint hover:text-brand transition"
+        >
+          ← Try another profile
+        </button>
+        <div className="flex items-baseline gap-2">
+          <span className="inline-block w-2 h-2 rounded-full bg-brand translate-y-[-2px]" />
+          <span className="font-display text-base text-ink">
+            Lumina<span className="italic text-brand"> Wealth</span>
+          </span>
         </div>
-        <div className="flex gap-2 items-center">
-          <span className="text-xs text-slate-500">Min. deposit {minDeposit}</span>
-          <Button variant="outline" onClick={() => setEthicsOpen(true)}>🔬 Ethics Lab</Button>
+        <button
+          onClick={() => setEthicsOpen(true)}
+          className="text-[10px] uppercase tracking-[0.28em] text-ink-faint hover:text-brand transition"
+        >
+          Open Ethics Lab →
+        </button>
+      </div>
+
+      {/* Editorial section header */}
+      <header className="hairline pb-6 mb-10 rise rise-2">
+        <div className="grid grid-cols-12 gap-6 items-end">
+          <div className="col-span-12 md:col-span-8">
+            <span className="text-[10px] uppercase tracking-[0.28em] text-ink-faint">
+              Your portfolio · prepared just now
+            </span>
+            <h1 className="font-display text-4xl md:text-6xl tracking-tight leading-[1.05] mt-2 text-balance">
+              Your <span className="italic text-brand">composed</span> plan
+            </h1>
+          </div>
+          <div className="col-span-12 md:col-span-4 md:text-right">
+            <div className="text-[10px] uppercase tracking-[0.28em] text-ink-faint mb-1">
+              Minimum deposit
+            </div>
+            <div className="font-display text-3xl text-ink num">{minDeposit}</div>
+          </div>
         </div>
       </header>
 
-      <div className="grid grid-cols-1 md:grid-cols-5 gap-4">
-        <div className="md:col-span-3 space-y-4">
+      {/* Main grid */}
+      <div className="grid grid-cols-1 md:grid-cols-12 gap-x-10 gap-y-10">
+        <div className="md:col-span-7 space-y-10 rise rise-3">
           <AdvisorCard payload={payload} />
           <WhyThisPlan payload={payload} />
         </div>
-        <div className="md:col-span-2 space-y-4">
-          <div className="bg-white rounded-xl p-5 shadow-sm border border-slate-200">
-            <div className="text-sm font-medium text-slate-900 mb-3">Your allocation</div>
+        <aside className="md:col-span-5 space-y-10 rise rise-4">
+          <section>
+            <div className="hairline pb-2 mb-5 flex items-baseline justify-between">
+              <span className="text-[10px] uppercase tracking-[0.28em] text-ink-faint">
+                Asset allocation
+              </span>
+              <span className="text-[10px] uppercase tracking-[0.2em] italic font-display text-ink-faint">
+                Swiss-tailored
+              </span>
+            </div>
             <AllocationChart alloc={alloc} />
-          </div>
+          </section>
           <FeePanel payload={payload} />
-        </div>
+        </aside>
       </div>
 
       <EthicsLabDrawer open={ethicsOpen} onOpenChange={setEthicsOpen} payload={payload} />

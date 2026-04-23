@@ -17,10 +17,10 @@ const FACTS: string[] = [
 ];
 
 const STAGES: string[] = [
-  "Analysing your profile…",
-  "Matching allocation model…",
-  "Consulting the LLM advisor…",
-  "Formatting your plan…",
+  "Reading your profile",
+  "Composing the allocation",
+  "Consulting the advisor",
+  "Engraving your plan",
 ];
 
 export function LoadingFacts() {
@@ -29,50 +29,77 @@ export function LoadingFacts() {
   const [visible, setVisible] = useState(true);
 
   useEffect(() => {
-    const factTimer = setInterval(() => {
+    const t = setInterval(() => {
       setVisible(false);
       setTimeout(() => {
         setFactIdx((i) => (i + 1) % FACTS.length);
         setVisible(true);
-      }, 250);
-    }, 3800);
-    return () => clearInterval(factTimer);
+      }, 320);
+    }, 4500);
+    return () => clearInterval(t);
   }, []);
 
   useEffect(() => {
-    const stageTimer = setInterval(() => {
+    const t = setInterval(() => {
       setStageIdx((i) => Math.min(i + 1, STAGES.length - 1));
-    }, 1400);
-    return () => clearInterval(stageTimer);
+    }, 1500);
+    return () => clearInterval(t);
   }, []);
 
   return (
-    <main className="min-h-[70vh] flex items-center justify-center px-6">
-      <div className="max-w-xl w-full text-center">
-        <div className="mb-6 inline-flex flex-col items-center gap-3">
-          <div className="relative w-12 h-12">
-            <div className="absolute inset-0 rounded-full border-2 border-slate-200" />
-            <div className="absolute inset-0 rounded-full border-2 border-transparent border-t-blue-600 animate-spin" />
+    <main className="min-h-screen flex items-center px-6">
+      <div className="max-w-4xl w-full mx-auto">
+        <div className="hairline pb-3 mb-10 flex items-baseline justify-between rise rise-1">
+          <div className="flex items-baseline gap-2">
+            <span className="inline-block w-2 h-2 rounded-full bg-brand translate-y-[-2px]" />
+            <span className="font-display text-base text-ink">
+              Lumina<span className="italic text-brand"> Wealth</span>
+            </span>
           </div>
-          <div className="text-xs uppercase tracking-[0.2em] text-slate-500">{STAGES[stageIdx]}</div>
+          <span className="text-[10px] uppercase tracking-[0.28em] text-ink-faint num">
+            {String(stageIdx + 1).padStart(2, "0")} / {String(STAGES.length).padStart(2, "0")}
+          </span>
         </div>
 
-        <div className="mt-8 rounded-xl border border-slate-200 bg-white px-6 py-5 shadow-sm">
-          <div className="text-[10px] uppercase tracking-wider text-slate-400 mb-2">Did you know?</div>
-          <p
-            className={`text-sm leading-relaxed text-slate-800 transition-opacity duration-200 ${visible ? "opacity-100" : "opacity-0"}`}
-          >
-            {FACTS[factIdx]}
-          </p>
+        <div className="rise rise-2">
+          <span className="text-[10px] uppercase tracking-[0.28em] text-ink-faint">
+            Currently —
+          </span>
+          <h2 className="font-display text-4xl md:text-6xl italic text-brand mt-2 leading-[1.05] tracking-tight">
+            {STAGES[stageIdx]}…
+          </h2>
         </div>
 
-        <div className="mt-6 flex items-center justify-center gap-1.5">
+        {/* Hairline progress */}
+        <div className="mt-10 grid grid-cols-4 gap-1 rise rise-3">
           {STAGES.map((_, i) => (
             <div
               key={i}
-              className={`h-1 rounded-full transition-all duration-300 ${i <= stageIdx ? "bg-blue-600 w-8" : "bg-slate-200 w-4"}`}
+              className={`transition-all duration-500
+                ${i <= stageIdx ? "h-[2px] bg-brand" : "h-px bg-rule"}`}
             />
           ))}
+        </div>
+
+        {/* Did you know */}
+        <div className="mt-20 rise rise-4">
+          <div className="hairline pb-3 mb-6 flex items-baseline justify-between">
+            <span className="text-[10px] uppercase tracking-[0.28em] text-ink-faint">
+              While you wait — from the case study
+            </span>
+            <span className="text-[10px] uppercase tracking-[0.28em] text-ink-faint italic font-display">
+              No. {String(factIdx + 1).padStart(2, "0")}
+            </span>
+          </div>
+          <p
+            className={`font-display text-2xl md:text-3xl text-ink leading-snug text-balance
+                        transition-opacity duration-300 min-h-[6rem]
+                        ${visible ? "opacity-100" : "opacity-0"}`}
+          >
+            <span className="text-brand italic mr-1">"</span>
+            {FACTS[factIdx]}
+            <span className="text-brand italic ml-0.5">"</span>
+          </p>
         </div>
       </div>
     </main>
