@@ -1,5 +1,6 @@
 "use client";
 import { useEffect, useState } from "react";
+import { LuminaLogo } from "./LuminaLogo";
 
 const FACTS: string[] = [
   "The global robo-advisory market reached $1.97 trillion in assets under management in 2025.",
@@ -49,14 +50,9 @@ export function LoadingFacts() {
   return (
     <main className="min-h-screen flex items-center px-6">
       <div className="max-w-4xl w-full mx-auto">
-        <div className="hairline pb-3 mb-10 flex items-baseline justify-between rise rise-1">
-          <div className="flex items-baseline gap-2">
-            <span className="inline-block w-2 h-2 rounded-full bg-brand translate-y-[-2px]" />
-            <span className="font-display text-base text-ink">
-              Lumina<span className="italic text-brand"> Wealth</span>
-            </span>
-          </div>
-          <span className="text-[10px] uppercase tracking-[0.28em] text-ink-faint num">
+        <div className="hairline pb-3 mb-10 flex items-end justify-between rise rise-1">
+          <LuminaLogo size="sm" />
+          <span className="text-[10px] uppercase tracking-[0.28em] text-ink-faint num pb-1">
             {String(stageIdx + 1).padStart(2, "0")} / {String(STAGES.length).padStart(2, "0")}
           </span>
         </div>

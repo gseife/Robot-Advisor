@@ -7,6 +7,7 @@ import { WhyThisPlan } from "@/components/WhyThisPlan";
 import { FeePanel } from "@/components/FeePanel";
 import { EthicsLabDrawer } from "@/components/EthicsLabDrawer";
 import { LoadingFacts } from "@/components/LoadingFacts";
+import { LuminaLogo } from "@/components/LuminaLogo";
 import { useToggles } from "@/lib/toggle-context";
 import type { AdvisePayload } from "@/lib/types";
 
@@ -80,12 +81,7 @@ export default function AdvicePage() {
         >
           ← Try another profile
         </button>
-        <div className="flex items-baseline gap-2">
-          <span className="inline-block w-2 h-2 rounded-full bg-brand translate-y-[-2px]" />
-          <span className="font-display text-base text-ink">
-            Lumina<span className="italic text-brand"> Wealth</span>
-          </span>
-        </div>
+        <LuminaLogo size="sm" />
         <button
           onClick={() => setEthicsOpen(true)}
           className="text-[10px] uppercase tracking-[0.28em] text-ink-faint hover:text-brand transition"

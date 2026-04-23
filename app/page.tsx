@@ -2,6 +2,7 @@
 import { useState } from "react";
 import { IntakeForm } from "@/components/IntakeForm";
 import { PersonaCards } from "@/components/PersonaCards";
+import { LuminaLogo } from "@/components/LuminaLogo";
 import type { Persona } from "@/lib/types";
 
 export default function Home() {
@@ -10,14 +11,9 @@ export default function Home() {
     <main className="min-h-screen">
       {/* Wordmark band */}
       <header className="max-w-6xl mx-auto px-6 pt-8 pb-10">
-        <div className="flex items-baseline justify-between rise rise-1">
-          <div className="flex items-baseline gap-2">
-            <span className="inline-block w-2 h-2 rounded-full bg-brand translate-y-[-2px]" />
-            <span className="font-display text-xl tracking-tight text-ink">
-              Lumina<span className="italic text-brand"> Wealth</span>
-            </span>
-          </div>
-          <span className="text-[10px] uppercase tracking-[0.28em] text-ink-faint">
+        <div className="flex items-end justify-between rise rise-1">
+          <LuminaLogo size="md" />
+          <span className="text-[10px] uppercase tracking-[0.28em] text-ink-faint pb-1">
             Zürich · est. 2024
           </span>
         </div>
