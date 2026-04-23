@@ -25,11 +25,14 @@ const STAGES: string[] = [
 ];
 
 export function LoadingFacts() {
-  const [factIdx, setFactIdx] = useState(() => Math.floor(Math.random() * FACTS.length));
+  // Deterministic initial so server HTML matches client hydration.
+  // Randomised on mount (client-only) before the first rotation.
+  const [factIdx, setFactIdx] = useState(0);
   const [stageIdx, setStageIdx] = useState(0);
   const [visible, setVisible] = useState(true);
 
   useEffect(() => {
+    setFactIdx(Math.floor(Math.random() * FACTS.length));
     const t = setInterval(() => {
       setVisible(false);
       setTimeout(() => {
