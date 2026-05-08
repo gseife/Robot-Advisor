@@ -42,7 +42,7 @@ export function PersonaCards({
               {p.blurb}
             </p>
             <div className="hairline pt-3 text-[10px] uppercase tracking-[0.2em] text-ink-faint flex items-center gap-2 num">
-              <span>CHF {p.annual_income_chf.toLocaleString("de-CH")}</span>
+              <span>CHF {p.annual_income_chf.toString().replace(/\B(?=(\d{3})+(?!\d))/g, "’")}</span>
               <span className="text-rule">·</span>
               <span>{p.horizon_years}-yr</span>
               <span className="text-rule">·</span>

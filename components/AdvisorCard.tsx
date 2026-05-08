@@ -3,10 +3,12 @@ import { useEffect, useRef, useState } from "react";
 import { useToggles } from "@/lib/toggle-context";
 import type { AdvisePayload } from "@/lib/types";
 import { JargonText } from "./JargonText";
+import { MitigatedBadge } from "./MitigatedBadge";
 
 export function AdvisorCard({ payload }: { payload: AdvisePayload }) {
   const { toggles } = useToggles();
   const src = toggles.literacy ? payload.biased : payload.mitigated;
+  const literacyMitigated = !toggles.literacy;
   const [typed, setTyped] = useState("");
   const hasStreamedInitial = useRef(false);
 
@@ -31,9 +33,20 @@ export function AdvisorCard({ payload }: { payload: AdvisePayload }) {
   const streaming = typed.length < src.greeting.length;
 
   return (
-    <article className="relative">
-      <div className="text-[10px] uppercase tracking-[0.28em] text-ink-faint mb-3">
-        From your advisor
+    <article
+      className={`relative transition-colors duration-300 ${
+        literacyMitigated ? "border-l-2 border-emerald-500 pl-5 -ml-5" : ""
+      }`}
+    >
+      <div className="flex items-center justify-between mb-3">
+        <div className="text-[10px] uppercase tracking-[0.28em] text-ink-faint">
+          From your advisor
+        </div>
+        <MitigatedBadge
+          mitigated={literacyMitigated}
+          section="§2.2"
+          label={literacyMitigated ? "plain language" : "industry tone"}
+        />
       </div>
       <p className="font-display text-2xl md:text-3xl text-ink leading-snug text-pretty min-h-[5rem]">
         <span className="text-brand italic mr-1">"</span>

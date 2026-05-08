@@ -17,6 +17,8 @@ export function getClient(): OpenAI {
   return new OpenAI({
     apiKey,
     baseURL: process.env.OPENAI_BASE_URL ?? "https://api.deepseek.com/v1",
+    timeout: 12_000,
+    maxRetries: 0,
   });
 }
 
@@ -25,17 +27,26 @@ export async function callAdvisor(
   userPrompt: string,
 ): Promise<AdviceOutput> {
   const client = getClient();
-  const model = process.env.OPENAI_MODEL ?? "deepseek-chat";
-  const resp = await client.chat.completions.create({
-    model,
-    response_format: { type: "json_object" },
-    messages: [
-      { role: "system", content: systemPrompt },
-      { role: "user", content: userPrompt },
-    ],
-    temperature: 0.4,
-  });
-  const content = resp.choices[0]?.message?.content ?? "{}";
-  const parsed = JSON.parse(content);
-  return AdviceOutputSchema.parse(parsed);
+  const model = process.env.OPENAI_MODEL ?? "deepseek-v4-flash";
+  const controller = new AbortController();
+  const hardLimit = setTimeout(() => controller.abort(), 12_000);
+  try {
+    const resp = await client.chat.completions.create(
+      {
+        model,
+        response_format: { type: "json_object" },
+        messages: [
+          { role: "system", content: systemPrompt },
+          { role: "user", content: userPrompt },
+        ],
+        temperature: 0.4,
+      },
+      { signal: controller.signal },
+    );
+    const content = resp.choices[0]?.message?.content ?? "{}";
+    const parsed = JSON.parse(content);
+    return AdviceOutputSchema.parse(parsed);
+  } finally {
+    clearTimeout(hardLimit);
+  }
 }
