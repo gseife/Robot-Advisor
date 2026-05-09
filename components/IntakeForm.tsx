@@ -35,6 +35,35 @@ const GOAL_LABELS: Record<SavingsGoal, string> = {
   other: "Something else",
 };
 
+const numInput =
+  "w-full bg-transparent border-0 border-b border-ink/20 focus:border-brand focus:outline-none px-0 py-2 text-3xl font-display tracking-tight text-ink placeholder:text-ink-faint placeholder:italic transition-colors num";
+
+function Field({
+  n,
+  label,
+  children,
+}: {
+  n: string;
+  label: string;
+  children: React.ReactNode;
+}) {
+  return (
+    <div className="py-6 border-b border-rule last:border-b-0">
+      <div className="grid grid-cols-12 gap-4">
+        <div className="col-span-12 md:col-span-3">
+          <div className="flex items-baseline gap-3">
+            <span className="font-display italic text-brand text-base leading-none">{n}</span>
+            <span className="text-[10px] uppercase tracking-[0.25em] text-ink-faint">
+              {label}
+            </span>
+          </div>
+        </div>
+        <div className="col-span-12 md:col-span-9">{children}</div>
+      </div>
+    </div>
+  );
+}
+
 export function IntakeForm({
   initial,
   personaId,
@@ -82,34 +111,6 @@ export function IntakeForm({
     sessionStorage.removeItem("advise-payload");
     router.push("/advice");
   }
-
-  // Editorial field shell
-  const Field = ({
-    n,
-    label,
-    children,
-  }: {
-    n: string;
-    label: string;
-    children: React.ReactNode;
-  }) => (
-    <div className="py-6 border-b border-rule last:border-b-0">
-      <div className="grid grid-cols-12 gap-4">
-        <div className="col-span-12 md:col-span-3">
-          <div className="flex items-baseline gap-3">
-            <span className="font-display italic text-brand text-base leading-none">{n}</span>
-            <span className="text-[10px] uppercase tracking-[0.25em] text-ink-faint">
-              {label}
-            </span>
-          </div>
-        </div>
-        <div className="col-span-12 md:col-span-9">{children}</div>
-      </div>
-    </div>
-  );
-
-  const numInput =
-    "w-full bg-transparent border-0 border-b border-ink/20 focus:border-brand focus:outline-none px-0 py-2 text-3xl font-display tracking-tight text-ink placeholder:text-ink-faint placeholder:italic transition-colors num";
 
   return (
     <form onSubmit={onSubmit} className="bg-parchment">
