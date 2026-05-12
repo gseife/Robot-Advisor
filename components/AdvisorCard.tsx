@@ -58,7 +58,7 @@ export function AdvisorCard({ payload }: { payload: AdvisePayload }) {
         )}
       </p>
       <div className="mt-5 text-xs italic font-display text-ink-faint">
-        — Lumi, your AI advisor ·{" "}
+        Lumi, your AI advisor ·{" "}
         {new Date().toLocaleDateString("de-CH", { dateStyle: "long" })}
       </div>
     </article>

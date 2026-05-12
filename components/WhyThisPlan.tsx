@@ -29,7 +29,7 @@ export function WhyThisPlan({ payload }: { payload: AdvisePayload }) {
     <section className="hairline pt-6 space-y-5 border-l-2 border-emerald-500 pl-5 -ml-5 transition-colors duration-300">
       <div className="flex items-baseline justify-between">
         <div className="text-[10px] uppercase tracking-[0.28em] text-ink-faint">
-          Why this plan — explained
+          Why this plan, explained
         </div>
         <MitigatedBadge mitigated={true} section="§2.2" label="plain language + alternatives" />
       </div>
@@ -49,7 +49,7 @@ export function WhyThisPlan({ payload }: { payload: AdvisePayload }) {
       <div className="text-xs text-ink-soft leading-relaxed border-t border-emerald-200 pt-4">
         <span className="font-medium text-emerald-800">Plain-language guarantee.</span>{" "}
         Every italic underlined term has a definition on hover. We name our reasoning,
-        flag alternatives you might prefer, and disclose how we get paid — even when
+        flag alternatives you might prefer, and disclose how we get paid, even when
         it's awkward for us.
       </div>
     </section>

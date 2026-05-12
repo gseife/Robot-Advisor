@@ -11,7 +11,7 @@ export const PERSONAS: Persona[] = [
     horizon_years: 5,
     risk_tolerance: 8,
     free_text_goal:
-      "Been watching markets for years — want to grow aggressively for a Zurich property down payment.",
+      "Been watching markets for years, want to grow aggressively for a Zurich property down payment.",
   },
   {
     id: "zoe",

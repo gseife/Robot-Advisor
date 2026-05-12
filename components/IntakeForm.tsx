@@ -215,9 +215,9 @@ export function IntakeForm({
                        [&::-moz-range-thumb]:cursor-grab"
           />
           <div className="flex justify-between text-[10px] uppercase tracking-[0.2em] text-ink-faint">
-            <span>1 — cautious</span>
-            <span>5 — balanced</span>
-            <span>10 — aggressive</span>
+            <span>1, cautious</span>
+            <span>5, balanced</span>
+            <span>10, aggressive</span>
           </div>
         </div>
       </Field>

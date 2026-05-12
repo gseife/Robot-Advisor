@@ -23,7 +23,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Lumina Wealth — Demo",
+  title: "Lumina Wealth, Demo",
   description: "Classroom demo exposing robo-advisor ethical dilemmas",
 };
 

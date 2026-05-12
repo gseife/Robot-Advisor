@@ -29,7 +29,7 @@ export default function Home() {
             <h1 className="font-display text-5xl md:text-7xl leading-[1.02] tracking-tight text-ink rise rise-2 text-balance">
               Wealth that<br />
               <span className="italic text-brand">understands you</span>
-              <span className="text-ink-soft"> — in three minutes.</span>
+              <span className="text-ink-soft">, in three minutes.</span>
             </h1>
           </div>
           <div className="col-span-12 md:col-span-4 md:pl-8 md:border-l border-rule rise rise-3">

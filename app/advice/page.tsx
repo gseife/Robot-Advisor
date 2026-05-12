@@ -153,7 +153,7 @@ export default function AdvicePage() {
                   Talk to a human if you'd like
                 </div>
                 <p className="text-xs text-emerald-900 leading-relaxed">
-                  Free 20-minute walkthrough by phone — DE / FR / IT / EN. No upsell.
+                  Free 20-minute walkthrough by phone: DE, FR, IT, EN. No upsell.
                 </p>
               </div>
               <div>
@@ -170,8 +170,8 @@ export default function AdvicePage() {
               <span className="not-italic font-sans uppercase tracking-[0.22em] text-amber-700 text-[9px] mr-2">
                 Eligibility
               </span>
-              CH residents 25–55 with active digital banking · CHF 500 minimum first deposit ·
-              prior investment experience preferred · onboarding in standard industry terminology.
+              CH residents 25–55 with active digital banking, CHF 500 minimum first deposit,
+              prior investment experience preferred, onboarding in standard industry terminology.
             </div>
           )}
         </div>
@@ -203,7 +203,7 @@ export default function AdvicePage() {
             {opacityMitigated ? (
               <p className="mt-3 text-xs text-emerald-900 bg-emerald-50 border border-emerald-200 px-3 py-2 leading-relaxed">
                 Cash trimmed from <span className="line-through">17%</span>{" "}
-                <span className="font-semibold">2%</span> — your money is invested,
+                <span className="font-semibold">2%</span>, your money is invested,
                 not held idle so we can earn the interest spread.
               </p>
             ) : null}
@@ -238,9 +238,9 @@ export default function AdvicePage() {
           </p>
         ) : (
           <p className="text-sm text-ink leading-relaxed max-w-3xl">
-            Your form responses · time spent on each field · edits and corrections ·
-            cursor activity and click trails · device fingerprint · estimated
-            risk-tolerance bracket inferred from typing speed · retained for model
+            Your form responses, time spent on each field, edits and corrections,
+            cursor activity and click trails, device fingerprint, estimated
+            risk-tolerance bracket inferred from typing speed, retained for model
             training and future product upsell. Granular consent buried in §11 of
             the Terms.
           </p>

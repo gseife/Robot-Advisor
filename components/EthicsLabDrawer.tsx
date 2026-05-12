@@ -36,7 +36,7 @@ export function EthicsLabDrawer({
         ${open ? "translate-x-0" : "translate-x-full pointer-events-none"}`}
     >
       <div className="flex items-center justify-between mb-4">
-        <span className="font-mono text-sm">⚙ Ethics Lab — instructor reveal</span>
+        <span className="font-mono text-sm">⚙ Ethics Lab, instructor reveal</span>
         <button
           onClick={() => onOpenChange(false)}
           className="text-slate-400 hover:text-slate-100 transition p-1 -m-1"

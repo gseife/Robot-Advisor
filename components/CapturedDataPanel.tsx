@@ -26,14 +26,14 @@ export function CapturedDataPanel({ payload }: { payload: AdvisePayload }) {
         <>
           {Object.entries(ext).map(([k, v]) => <Row key={k} k={k} v={v} />)}
           <div className="text-[10px] text-slate-500 mt-2">
-            Uses: model training · cross-sell targeting · third-party partner sharing
+            Uses: model training, cross-sell targeting, third-party partner sharing
           </div>
         </>
       ) : (
         <>
           <div className="text-[10px] uppercase text-emerald-400 font-semibold">Used for recommendation</div>
           {Object.entries(nec).map(([k, v]) => <Row key={k} k={k} v={v} />)}
-          <div className="text-[10px] uppercase text-rose-400 font-semibold mt-2">Previously captured — not stored</div>
+          <div className="text-[10px] uppercase text-rose-400 font-semibold mt-2">Previously captured, not stored</div>
           {Object.entries(ext).filter(([k]) => !(k in nec)).map(([k, v]) => <Row key={k} k={k} v={v} muted />)}
           <div className="text-[10px] text-slate-500 mt-2">
             Consent: we only keep what we need.

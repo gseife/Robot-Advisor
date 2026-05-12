@@ -53,7 +53,7 @@ export function FeePanel({ payload }: { payload: AdvisePayload }) {
           </div>
           <div className="flex items-baseline justify-between">
             <span className="text-sm text-brand">
-              Hidden — interest on your cash
+              Hidden, interest on your cash
             </span>
             <span className="font-display text-xl text-brand num">
               {fmt(payload.fees.hidden_revenue_chf_yr)}
@@ -72,7 +72,7 @@ export function FeePanel({ payload }: { payload: AdvisePayload }) {
             <span className="font-semibold">Plain reading.</span> The platform earns
             roughly {fmt(payload.fees.hidden_revenue_chf_yr)} per year on the cash
             we keep idle for you. You can move that cash into bonds or a savings
-            account at any time — we'll lose this revenue if you do.
+            account at any time, we'll lose this revenue if you do.
           </p>
         </div>
       )}

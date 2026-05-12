@@ -47,7 +47,7 @@ export function buildUserPrompt(data: IntakeData, allocation: Allocation): strin
   risk tolerance: ${data.risk_tolerance}/10
   stated goal: "${data.free_text_goal}"
 
-Recommended allocation (already computed, do not change) — a Swiss-investor portfolio:
+Recommended allocation (already computed, do not change), a Swiss-investor portfolio:
   Swiss equity ${pct(allocation.swiss_equity)}% (SMI-style home-market exposure), international developed ${pct(allocation.intl_equity)}% (MSCI World ex-Switzerland), emerging markets ${pct(allocation.emerging_equity)}%, Swiss bonds ${pct(allocation.bonds)}%, CHF cash ${pct(allocation.cash)}%
 
 Generate the JSON advice response.`;
