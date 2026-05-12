@@ -3,6 +3,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { Textarea } from "@/components/ui/textarea";
 import type { IntakeData, Persona, SavingsGoal } from "@/lib/types";
+import { buildClientPayload } from "@/lib/client-advise";
 
 const EMPTY: IntakeData = {
   age: 25,
@@ -99,16 +100,14 @@ export function IntakeForm({
   function onSubmit(e: React.FormEvent) {
     e.preventDefault();
     setSubmitting(true);
-    const body = {
-      ...data,
-      meta: {
-        time_on_form_seconds: Math.round((Date.now() - startedAt) / 1000),
-        edits_made: edits,
-        persona_id: personaId,
-      },
+    const meta = {
+      time_on_form_seconds: Math.round((Date.now() - startedAt) / 1000),
+      edits_made: edits,
+      persona_id: personaId,
     };
-    sessionStorage.setItem("advise-intake-request", JSON.stringify(body));
-    sessionStorage.removeItem("advise-payload");
+    const payload = buildClientPayload(data, meta);
+    sessionStorage.setItem("advise-payload", JSON.stringify(payload));
+    sessionStorage.removeItem("advise-intake-request");
     router.push("/advice");
   }
 
