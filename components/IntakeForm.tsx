@@ -105,9 +105,14 @@ export function IntakeForm({
       edits_made: edits,
       persona_id: personaId,
     };
-    const payload = buildClientPayload(data, meta);
-    sessionStorage.setItem("advise-payload", JSON.stringify(payload));
-    sessionStorage.removeItem("advise-intake-request");
+    if (process.env.NEXT_PUBLIC_STATIC_EXPORT === "1") {
+      const payload = buildClientPayload(data, meta);
+      sessionStorage.setItem("advise-payload", JSON.stringify(payload));
+      sessionStorage.removeItem("advise-intake-request");
+    } else {
+      sessionStorage.setItem("advise-intake-request", JSON.stringify({ ...data, meta }));
+      sessionStorage.removeItem("advise-payload");
+    }
     router.push("/advice");
   }
 

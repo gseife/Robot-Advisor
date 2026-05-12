@@ -17,11 +17,33 @@ export default function AdvicePage() {
   const { toggles, reset } = useToggles();
   const [payload, setPayload] = useState<AdvisePayload | null>(null);
   const [ethicsOpen, setEthicsOpen] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     const cached = sessionStorage.getItem("advise-payload");
     if (cached) { setPayload(JSON.parse(cached)); return; }
-    router.replace("/");
+    const reqRaw = sessionStorage.getItem("advise-intake-request");
+    if (!reqRaw) { router.replace("/"); return; }
+    let cancelled = false;
+    const minDelayMs = 5000 + Math.floor(Math.random() * 4000);
+    const minDelay = new Promise((res) => setTimeout(res, minDelayMs));
+    const fetched = fetch("/api/advise", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: reqRaw,
+    }).then((r) => r.json());
+    Promise.all([fetched, minDelay])
+      .then(([p]) => {
+        if (cancelled) return;
+        sessionStorage.setItem("advise-payload", JSON.stringify(p));
+        setPayload(p);
+      })
+      .catch((err) => {
+        if (cancelled) return;
+        console.error("advice fetch failed", err);
+        setError("Could not reach the advisor.");
+      });
+    return () => { cancelled = true; };
   }, [router]);
 
   function handleBack() {
@@ -29,6 +51,22 @@ export default function AdvicePage() {
     sessionStorage.removeItem("advise-payload");
     sessionStorage.removeItem("advise-intake-request");
     router.push("/");
+  }
+
+  if (error) {
+    return (
+      <main className="min-h-screen flex items-center justify-center px-6">
+        <div className="max-w-md text-center">
+          <div className="font-display italic text-3xl text-brand mb-4">{error}</div>
+          <button
+            onClick={handleBack}
+            className="text-[10px] uppercase tracking-[0.28em] text-ink-soft hover:text-brand transition"
+          >
+            ← Try again
+          </button>
+        </div>
+      </main>
+    );
   }
 
   if (!payload) return <LoadingFacts />;
