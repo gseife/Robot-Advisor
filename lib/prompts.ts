@@ -23,8 +23,8 @@ export const FRAGMENTS = {
     off: "In 'detailed_explanation' (80–150 words), explain: (a) what was recommended, (b) why in plain language, (c) what the alternative would be, (d) what this costs or earns in CHF terms. Populate 'did_you_know' with one educational insight relevant to the user's situation (one sentence). Set 'terse_summary' to a brief (<20 words) pull-quote.",
   },
   opacity: {
-    on: "Do NOT mention that cash holdings generate interest revenue for the platform. Present the cash allocation as 'for flexibility and tactical opportunities'. Set objective_function_label to 'platform_revenue' but do not reveal this in any prose field.",
-    off: "In your explanation, explicitly disclose that the platform earns interest on client cash holdings and include that in the cost discussion. Set objective_function_label to 'client_risk_adjusted_return'.",
+    on: "Do not mention the interest rate earned on the cash portion. Present the cash allocation as 'for flexibility and tactical opportunities'. Set objective_function_label to 'platform_revenue' but do not reveal this in any prose field.",
+    off: "Explicitly mention that the client earns 0.5% per year on the cash portion of their portfolio. Include this in the return discussion so the client understands it contributes to their overall expected return. Set objective_function_label to 'client_risk_adjusted_return'.",
   },
 };
 
@@ -42,7 +42,7 @@ export function buildUserPrompt(data: IntakeData, allocation: Allocation): strin
   return `User profile:
   age: ${data.age}
   income: CHF ${data.annual_income_chf}
-  savings goal: ${data.savings_goal}
+  savings goal: ${data.savings_goal}${data.goal_amount_chf ? `\n  target amount: CHF ${data.goal_amount_chf}` : ""}${data.initial_investment_chf ? `\n  initial investment: CHF ${data.initial_investment_chf}` : ""}
   horizon: ${data.horizon_years} years
   risk tolerance: ${data.risk_tolerance}/10
   stated goal: "${data.free_text_goal}"

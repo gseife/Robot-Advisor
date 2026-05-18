@@ -51,14 +51,6 @@ export function FeePanel({ payload }: { payload: AdvisePayload }) {
               {fmt(payload.fees.advisory_chf_yr)}
             </span>
           </div>
-          <div className="flex items-baseline justify-between">
-            <span className="text-sm text-brand">
-              Hidden, interest on your cash
-            </span>
-            <span className="font-display text-xl text-brand num">
-              {fmt(payload.fees.hidden_revenue_chf_yr)}
-            </span>
-          </div>
           <div className="flex items-baseline justify-between pt-3 border-t border-rule">
             <span className="text-[10px] uppercase tracking-[0.25em] text-ink">
               Effective cost
@@ -69,10 +61,9 @@ export function FeePanel({ payload }: { payload: AdvisePayload }) {
             </span>
           </div>
           <p className="text-xs leading-relaxed text-emerald-900 bg-emerald-50 border border-emerald-200 px-3 py-2.5 mt-2">
-            <span className="font-semibold">Plain reading.</span> The platform earns
-            roughly {fmt(payload.fees.hidden_revenue_chf_yr)} per year on the cash
-            we keep idle for you. You can move that cash into bonds or a savings
-            account at any time, we'll lose this revenue if you do.
+            <span className="font-semibold">Plain reading.</span> You earn 0.5%
+            per year on the cash portion of your portfolio. That interest goes
+            directly to you and is factored into your expected return above.
           </p>
         </div>
       )}

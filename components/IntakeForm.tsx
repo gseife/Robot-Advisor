@@ -8,7 +8,9 @@ import { buildClientPayload } from "@/lib/client-advise";
 const EMPTY: IntakeData = {
   age: 25,
   annual_income_chf: 30000,
+  initial_investment_chf: 0,
   savings_goal: "general",
+  goal_amount_chf: 0,
   horizon_years: 10,
   risk_tolerance: 5,
   free_text_goal: "",
@@ -84,7 +86,7 @@ export function IntakeForm({
   };
 
   const numericPatch =
-    (k: "age" | "annual_income_chf" | "horizon_years") =>
+    (k: "age" | "annual_income_chf" | "initial_investment_chf" | "goal_amount_chf" | "horizon_years") =>
     (e: React.ChangeEvent<HTMLInputElement>) => {
       const raw = e.target.value;
       if (raw === "") {
@@ -105,6 +107,7 @@ export function IntakeForm({
       edits_made: edits,
       persona_id: personaId,
     };
+    sessionStorage.setItem("advise-intake-data", JSON.stringify(data));
     if (process.env.NEXT_PUBLIC_STATIC_EXPORT === "1") {
       const payload = buildClientPayload(data, meta);
       sessionStorage.setItem("advise-payload", JSON.stringify(payload));
@@ -150,7 +153,23 @@ export function IntakeForm({
         </div>
       </Field>
 
-      <Field n="03" label="Savings goal">
+      <Field n="03" label="Initial investment">
+        <div className="flex items-baseline gap-4">
+          <span className="text-xs uppercase tracking-[0.2em] text-ink-soft">CHF</span>
+          <input
+            id="initial_investment"
+            type="text"
+            inputMode="numeric"
+            autoComplete="off"
+            className={`${numInput} flex-1`}
+            value={showOrEmpty(data.initial_investment_chf ?? 0)}
+            onChange={numericPatch("initial_investment_chf")}
+            placeholder="Amount you invest upfront"
+          />
+        </div>
+      </Field>
+
+      <Field n="04" label="Savings goal">
         <div className="flex flex-wrap gap-2">
           {GOAL_ORDER.map((g) => {
             const on = data.savings_goal === g;
@@ -169,9 +188,22 @@ export function IntakeForm({
             );
           })}
         </div>
+        <div className="flex items-baseline gap-4 mt-5">
+          <span className="text-xs uppercase tracking-[0.2em] text-ink-soft">CHF</span>
+          <input
+            id="goal_amount"
+            type="text"
+            inputMode="numeric"
+            autoComplete="off"
+            className={`${numInput} flex-1`}
+            value={showOrEmpty(data.goal_amount_chf ?? 0)}
+            onChange={numericPatch("goal_amount_chf")}
+            placeholder="Target amount"
+          />
+        </div>
       </Field>
 
-      <Field n="04" label="Horizon">
+      <Field n="05" label="Horizon">
         <div className="flex items-baseline gap-3">
           <input
             id="horizon"
@@ -187,7 +219,7 @@ export function IntakeForm({
         </div>
       </Field>
 
-      <Field n="05" label="Risk tolerance">
+      <Field n="06" label="Risk tolerance">
         <div className="space-y-3">
           <div className="flex items-baseline gap-3">
             <span className="font-display text-6xl text-brand leading-none num">
@@ -226,7 +258,7 @@ export function IntakeForm({
         </div>
       </Field>
 
-      <Field n="06" label="In your own words">
+      <Field n="07" label="In your own words">
         <Textarea
           id="goal"
           rows={3}

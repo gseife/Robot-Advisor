@@ -3,15 +3,17 @@ import type { Persona } from "./types";
 export const PERSONAS: Persona[] = [
   {
     id: "marco",
-    displayName: "Marco, 26",
-    blurb: "M.A. Banking & Finance. Aggressive growth for a Zurich flat.",
-    age: 26,
-    annual_income_chf: 85000,
+    displayName: "Marco, 27",
+    blurb: "M.A. Political Science. No finance background, saving for a Swiss house.",
+    age: 27,
+    annual_income_chf: 150000,
+    initial_investment_chf: 80000,
     savings_goal: "house",
-    horizon_years: 5,
+    goal_amount_chf: 600000,
+    horizon_years: 8,
     risk_tolerance: 8,
     free_text_goal:
-      "Been watching markets for years, want to grow aggressively for a Zurich property down payment.",
+      "I want to save for the downpayment for a house in Switzerland that is going to cost 2000000 and thus I want to save up 600000 for the downpayment.",
   },
   {
     id: "zoe",

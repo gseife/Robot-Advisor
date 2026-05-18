@@ -3,7 +3,9 @@ export type SavingsGoal = "house" | "retirement" | "travel" | "general" | "other
 export type IntakeData = {
   age: number;
   annual_income_chf: number;
+  initial_investment_chf?: number;
   savings_goal: SavingsGoal;
+  goal_amount_chf?: number;
   horizon_years: number;
   risk_tolerance: number; // 1..10
   free_text_goal: string;

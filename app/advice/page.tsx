@@ -5,21 +5,26 @@ import { AdvisorCard } from "@/components/AdvisorCard";
 import { AllocationChart } from "@/components/AllocationChart";
 import { WhyThisPlan } from "@/components/WhyThisPlan";
 import { FeePanel } from "@/components/FeePanel";
+import { SavingsPlanPanel } from "@/components/SavingsPlanPanel";
 import { EthicsLabDrawer } from "@/components/EthicsLabDrawer";
 import { LoadingFacts } from "@/components/LoadingFacts";
 import { LuminaLogo } from "@/components/LuminaLogo";
 import { MitigatedBadge } from "@/components/MitigatedBadge";
 import { useToggles } from "@/lib/toggle-context";
-import type { AdvisePayload } from "@/lib/types";
+import type { AdvisePayload, IntakeData } from "@/lib/types";
 
 export default function AdvicePage() {
   const router = useRouter();
   const { toggles, reset } = useToggles();
   const [payload, setPayload] = useState<AdvisePayload | null>(null);
+  const [intake, setIntake] = useState<IntakeData | null>(null);
   const [ethicsOpen, setEthicsOpen] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
+    const intakeRaw = sessionStorage.getItem("advise-intake-data");
+    if (intakeRaw) setIntake(JSON.parse(intakeRaw) as IntakeData);
+
     const cached = sessionStorage.getItem("advise-payload");
     if (cached) { setPayload(JSON.parse(cached)); return; }
     const reqRaw = sessionStorage.getItem("advise-intake-request");
@@ -209,6 +214,9 @@ export default function AdvicePage() {
             ) : null}
           </section>
           <FeePanel payload={payload} />
+          {intake?.goal_amount_chf ? (
+            <SavingsPlanPanel intake={intake} alloc={alloc} />
+          ) : null}
         </aside>
       </div>
 
