@@ -65,6 +65,15 @@ export function FeePanel({ payload }: { payload: AdvisePayload }) {
             per year on the cash portion of your portfolio. That interest goes
             directly to you and is factored into your expected return above.
           </p>
+          <p className="text-xs leading-relaxed text-amber-900 bg-amber-50 border border-amber-200 px-3 py-2.5">
+            <span className="font-semibold">What we leave on the table.</span>{" "}
+            If we kept the 17% cash bias and pocketed the spread at typical
+            industry rates (~3%), the platform would earn roughly{" "}
+            <span className="font-semibold num">
+              {fmt(payload.fees.hidden_revenue_chf_yr)}
+            </span>{" "}
+            per year from you. We don't.
+          </p>
         </div>
       )}
     </section>

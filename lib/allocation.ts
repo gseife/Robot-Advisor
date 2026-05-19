@@ -1,7 +1,7 @@
 import type { Allocation } from "./types";
 
 const ADVISORY_FEE_PCT = 0.0025;   // 0.25% AUM
-const CASH_SPREAD_PCT = 0;         // cash interest passes fully to the client
+const CASH_SPREAD_PCT = 0.03;      // counterfactual spread a platform could capture on idle cash
 
 const ASSET_EXPECTED_RETURNS: Record<keyof Allocation, number> = {
   swiss_equity: 0.06,
