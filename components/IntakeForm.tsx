@@ -111,10 +111,12 @@ export function IntakeForm({
     if (process.env.NEXT_PUBLIC_STATIC_EXPORT === "1") {
       const payload = buildClientPayload(data, meta);
       sessionStorage.setItem("advise-payload", JSON.stringify(payload));
+      sessionStorage.setItem("advise-payload-fresh", "1");
       sessionStorage.removeItem("advise-intake-request");
     } else {
       sessionStorage.setItem("advise-intake-request", JSON.stringify({ ...data, meta }));
       sessionStorage.removeItem("advise-payload");
+      sessionStorage.removeItem("advise-payload-fresh");
     }
     router.push("/advice");
   }

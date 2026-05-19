@@ -25,12 +25,25 @@ export default function AdvicePage() {
     const intakeRaw = sessionStorage.getItem("advise-intake-data");
     if (intakeRaw) setIntake(JSON.parse(intakeRaw) as IntakeData);
 
-    const cached = sessionStorage.getItem("advise-payload");
-    if (cached) { setPayload(JSON.parse(cached)); return; }
-    const reqRaw = sessionStorage.getItem("advise-intake-request");
-    if (!reqRaw) { router.replace("/"); return; }
     let cancelled = false;
     const minDelayMs = 5000 + Math.floor(Math.random() * 4000);
+
+    const cached = sessionStorage.getItem("advise-payload");
+    const isFresh = sessionStorage.getItem("advise-payload-fresh") === "1";
+    if (cached) {
+      const parsed = JSON.parse(cached) as AdvisePayload;
+      if (isFresh) {
+        sessionStorage.removeItem("advise-payload-fresh");
+        const t = setTimeout(() => {
+          if (!cancelled) setPayload(parsed);
+        }, minDelayMs);
+        return () => { cancelled = true; clearTimeout(t); };
+      }
+      setPayload(parsed);
+      return;
+    }
+    const reqRaw = sessionStorage.getItem("advise-intake-request");
+    if (!reqRaw) { router.replace("/"); return; }
     const minDelay = new Promise((res) => setTimeout(res, minDelayMs));
     const fetched = fetch("/api/advise", {
       method: "POST",
